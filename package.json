@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "start": "npm run build &amp;&amp; node dist/index.js",
+    "start": "npm run build && node dist/index.js",
     "dev": "tsc --watch",
     "test": "jest",
     "test:watch": "jest --watch"
@@ -13,6 +13,11 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "music-metadata": "^7.14.0",
+    "node-id3": "^0.2.9",
+    "uuid": "^13.0.0"
+  },
   "devDependencies": {
     "@types/jest": "^30.0.0",
     "@types/node": "^24.9.1",
@@ -20,10 +25,5 @@
     "jest": "^30.2.0",
     "ts-jest": "^29.4.5",
     "typescript": "^5.9.3"
-  },
-  "dependencies": {
-    "music-metadata": "^11.9.0",
-    "node-id3": "^0.2.9",
-    "uuid": "^13.0.0"
   }
 }
