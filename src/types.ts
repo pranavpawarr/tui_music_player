@@ -10,7 +10,7 @@ export interface Track {
 
 export type RepeatMode = "off" | "on" | "all";
 
-export interface PlaybackSafe {
+export interface PlaybackState {
   currentTrack: Track | null;
   isPlaying: boolean;
   volume: number;

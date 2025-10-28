@@ -13,10 +13,9 @@ export class AudioPlayer {
     this.player = player({});
   }
 
-  async play(trackPath: string): Promise<void> {
-    if (this.isPlaying && this.currentAudio) {
-      this.currentAudio.kill();
-    }
+  play(trackPath: string): void {
+    // IMPORTANT: Stop completely before playing new track
+    this.stop();
 
     this.currentTrack = trackPath;
     this.isPlaying = true;
@@ -31,12 +30,16 @@ export class AudioPlayer {
   }
 
   public stop(): void {
-    if (this.isPlaying && this.currentAudio) {
-      this.currentAudio.kill();
+    if (this.currentAudio) {
+      try {
+        this.currentAudio.kill(); // Kill the process
+      } catch (err) {
+        // Ignore errors if already killed
+      }
+      this.currentAudio = null;
     }
     this.isPlaying = false;
     this.currentTrack = undefined;
-    this.currentAudio = null;
   }
 
   public restart(): void {

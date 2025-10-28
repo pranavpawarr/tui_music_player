@@ -9,13 +9,13 @@ async function main() {
   console.log("📁 Scanning for audio files...");
   const scanner = new FileScanner();
 
-  const musicFolder = "./__tests__/test_music";
+  const musicFolder = "./src/__tests__/test_music";
   const files = await scanner.scanDirectory(musicFolder);
 
   console.log(`✓ Found ${files.length} audio files\n`);
 
   if (files.length === 0) {
-    console.log("❌ No audio files found. Check your music folder path!");
+    console.log("❌ No audio files found!");
     return;
   }
 
@@ -30,43 +30,63 @@ async function main() {
 
   console.log(`✓ Playlist ready with ${playlist.getTrackCount()} tracks\n`);
 
-  console.log("🎼 First 3 tracks:");
-  for (let i = 0; i < Math.min(3, tracks.length); i++) {
+  console.log("🎼 All tracks:");
+  for (let i = 0; i < tracks.length; i++) {
     const track = tracks[i];
-    console.log(`  ${i + 1}. ${track.title} - ${track.artist}`);
+    console.log(
+      `  ${i + 1}. ${track.title} - ${track.artist} (${reader.formatDuration(
+        track.duration
+      )})`
+    );
   }
   console.log();
 
   const player = new AudioPlayer();
-  const firstTrack = playlist.getCurrentTrack();
 
-  if (firstTrack) {
-    console.log(`▶️  Playing: ${firstTrack.title} by ${firstTrack.artist}`);
-    await player.play(firstTrack.path);
+  // Play Track 1
+  const track1 = playlist.getCurrentTrack();
+  if (track1) {
+    console.log(`\n▶️  Playing: ${track1.title}`);
+    player.play(track1.path);
 
-    console.log("\n⏳ Waiting 10 seconds, then playing next track...");
-    await sleep(10000);
+    console.log("⏳ Playing for 5 seconds...");
+    await sleep(5000);
 
     player.stop();
-    console.log("⏹️  Stopped first track\n");
-
-    const nextTrack = playlist.nextTrack();
-    if (nextTrack) {
-      console.log(
-        `▶️  Playing next: ${nextTrack.title} by ${nextTrack.artist}`
-      );
-      await player.play(nextTrack.path);
-
-      await sleep(10000);
-      player.stop();
-    }
+    console.log("⏹️  Stopped\n");
+    await sleep(500); // Small delay to ensure clean stop
   }
 
-  console.log("\n✅ Test complete!");
-}
+  // Play Track 2
+  const track2 = playlist.nextTrack();
+  if (track2) {
+    console.log(`▶️  Playing: ${track2.title}`);
+    player.play(track2.path);
 
-function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+    console.log("⏳ Playing for 5 seconds...");
+    await sleep(5000);
+
+    player.stop();
+    console.log("⏹️  Stopped\n");
+    await sleep(500); // Small delay
+  }
+
+  // Play Track 3
+  const track3 = playlist.nextTrack();
+  if (track3) {
+    console.log(`▶️  Playing: ${track3.title}`);
+    player.play(track3.path);
+
+    console.log("⏳ Playing for 5 seconds...");
+    await sleep(5000);
+
+    player.stop();
+    console.log("⏹️  Stopped\n");
+  }
+
+  function sleep(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
 }
 
 main().catch(console.error);
