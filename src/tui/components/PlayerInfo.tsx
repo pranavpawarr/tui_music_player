@@ -86,7 +86,7 @@ export function PlayerInfo({ player }: PlayerInfoProps) {
       <Box marginTop={1}>
         <Box width={15}>
           <Text bold color="yellow">
-            📅 Year:
+            Year:
           </Text>
         </Box>
         <Box marginRight={3}>
@@ -97,7 +97,7 @@ export function PlayerInfo({ player }: PlayerInfoProps) {
       <Box>
         <Box width={15}>
           <Text bold color="green">
-            ⏱️ Time:
+            Time:
           </Text>
         </Box>
         <Box>

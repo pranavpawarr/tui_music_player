@@ -79,7 +79,7 @@ export default function App({ playlist }: AppProps) {
         >
           <Box>
             <Text bold color={player.isPlaying ? "green" : "yellow"}>
-              {player.isPlaying ? "▶️  PLAYING" : "⏸️  PAUSED"}
+              {player.isPlaying ? "PLAYING" : "PAUSED"}
             </Text>
           </Box>
           <Box>

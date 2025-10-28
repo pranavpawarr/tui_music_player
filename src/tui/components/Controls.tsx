@@ -13,7 +13,7 @@ export function Controls() {
     >
       <Box justifyContent="center" marginBottom={1}>
         <Gradient name="teen">
-          <Text bold>⌨️ KEYBOARD CONTROLS</Text>
+          <Text bold>KEYBOARD CONTROLS</Text>
         </Gradient>
       </Box>
 
