@@ -8,6 +8,7 @@ import { PlayerInfo } from "./components/PlayerInfo.js";
 import { Controls } from "./components/Controls.js";
 import { VolumeBar } from "./components/VolumeBar.js";
 import { QueueView } from "./components/QueueView.js";
+import { DancingCat } from "./components/DancingCat.js";
 
 interface AppProps {
   playlist: PlaylistManager;
@@ -16,51 +17,35 @@ interface AppProps {
 export default function App({ playlist }: AppProps) {
   const { exit } = useApp();
   const player = usePlayer(playlist);
-  const [showHelp, setShowHelp] = useState(true);
+  const [showHelp, setShowHelp] = useState(false);
   const [showQueue, setShowQueue] = useState(false);
 
   useInput((input, key) => {
-    // Quit
     if (input === "q" || input === "Q") {
       player.stop();
       exit();
     }
-
-    // Toggle help
     if (input === "h" || input === "H") {
       setShowHelp(!showHelp);
     }
-
-    // Toggle queue view
     if (input === "l" || input === "L") {
       setShowQueue(!showQueue);
     }
-
-    // Play/Pause
     if (input === " ") {
       player.togglePlayPause();
     }
-
-    // Next track
     if (key.rightArrow || input === "n") {
       player.next();
     }
-
-    // Previous track
     if (key.leftArrow || input === "p") {
       player.previous();
     }
-
-    // Restart track
     if (input === "r") {
       player.restart();
     }
-
-    // Volume controls
     if (key.upArrow || input === "+" || input === "=") {
       player.increaseVolume();
     }
-
     if (key.downArrow || input === "-" || input === "_") {
       player.decreaseVolume();
     }
@@ -68,7 +53,7 @@ export default function App({ playlist }: AppProps) {
 
   return (
     <Box flexDirection="column" padding={1}>
-      {/* Animated Title */}
+      {/* Title */}
       <Box justifyContent="center" marginBottom={1}>
         <Gradient name="rainbow">
           <BigText text="Music" font="chrome" />
@@ -83,7 +68,7 @@ export default function App({ playlist }: AppProps) {
         paddingX={2}
         paddingY={1}
       >
-        {/* Player Status Bar */}
+        {/* Status Bar */}
         <Box
           justifyContent="space-between"
           borderStyle="round"
@@ -104,37 +89,37 @@ export default function App({ playlist }: AppProps) {
           </Box>
         </Box>
 
-        {/* Two Column Layout: Player Info + Queue */}
-        <Box>
-          {/* Left Column: Player Info */}
-          <Box flexDirection="column" flexGrow={1} marginRight={2}>
+        {/* Main Content Row */}
+        <Box marginBottom={1}>
+          {/* Dancing Cat */}
+          <DancingCat isPlaying={player.isPlaying} />
+
+          {/* Track Info */}
+          <Box flexGrow={1} marginLeft={2}>
             <PlayerInfo player={player} />
-
-            {/* Volume Bar */}
-            <Box marginY={1}>
-              <VolumeBar volume={player.volume} />
-            </Box>
           </Box>
-
-          {/* Right Column: Queue (if enabled) */}
-          {showQueue && (
-            <Box width={45}>
-              <QueueView
-                playlist={playlist}
-                currentTrack={player.currentTrack}
-              />
-            </Box>
-          )}
         </Box>
 
-        {/* Divider with gradient */}
+        {/* Volume Bar */}
+        <Box marginY={1}>
+          <VolumeBar volume={player.volume} />
+        </Box>
+
+        {/* Queue (if enabled) */}
+        {showQueue && (
+          <Box marginY={1}>
+            <QueueView playlist={playlist} currentTrack={player.currentTrack} />
+          </Box>
+        )}
+
+        {/* Divider */}
         <Box marginY={1}>
           <Gradient name="passion">
-            <Text>{"═".repeat(showQueue ? 120 : 80)}</Text>
+            <Text>{"═".repeat(80)}</Text>
           </Gradient>
         </Box>
 
-        {/* Controls Help (toggleable) */}
+        {/* Controls (if enabled) */}
         {showHelp && <Controls />}
 
         {/* Footer */}

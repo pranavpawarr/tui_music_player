@@ -42,17 +42,25 @@ export function PlayerInfo({ player }: PlayerInfoProps) {
       borderColor="magenta"
       paddingX={3}
       paddingY={1}
+      flexGrow={1}
     >
-      {/* Title - Using Gradient for emphasis */}
+      {/* Title */}
       <Box marginBottom={1}>
+        <Text color="cyan" bold>
+          ♫{" "}
+        </Text>
         <Gradient name="cristal">
-          <Text bold>♫ {currentTrack.title} ♫</Text>
+          <Text bold>{currentTrack.title}</Text>
         </Gradient>
+        <Text color="cyan" bold>
+          {" "}
+          ♫
+        </Text>
       </Box>
 
       {/* Artist */}
-      <Box marginBottom={0}>
-        <Box width={12}>
+      <Box>
+        <Box width={15}>
           <Text bold color="cyan">
             🎤 Artist:
           </Text>
@@ -63,8 +71,8 @@ export function PlayerInfo({ player }: PlayerInfoProps) {
       </Box>
 
       {/* Album */}
-      <Box marginBottom={0}>
-        <Box width={12}>
+      <Box>
+        <Box width={15}>
           <Text bold color="magenta">
             💿 Album:
           </Text>
@@ -75,8 +83,8 @@ export function PlayerInfo({ player }: PlayerInfoProps) {
       </Box>
 
       {/* Year & Duration */}
-      <Box>
-        <Box width={12}>
+      <Box marginTop={1}>
+        <Box width={15}>
           <Text bold color="yellow">
             📅 Year:
           </Text>
@@ -84,7 +92,10 @@ export function PlayerInfo({ player }: PlayerInfoProps) {
         <Box marginRight={3}>
           <Text color="white">{currentTrack.year || "N/A"}</Text>
         </Box>
-        <Box width={12}>
+      </Box>
+
+      <Box>
+        <Box width={15}>
           <Text bold color="green">
             ⏱️ Time:
           </Text>
