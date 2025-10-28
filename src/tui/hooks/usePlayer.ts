@@ -11,9 +11,21 @@ export function usePlayer(playlist: PlaylistManager) {
   const [volume, setVolume] = useState(1.0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const playerRef = useRef<AudioPlayer>(new AudioPlayer());
+  const playTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Clear any pending play operations
+  function clearPendingPlay() {
+    if (playTimeoutRef.current) {
+      clearTimeout(playTimeoutRef.current);
+      playTimeoutRef.current = null;
+    }
+  }
 
   function play() {
     if (!currentTrack) return;
+
+    clearPendingPlay();
+
     try {
       playerRef.current.play(currentTrack.path);
       setIsPlaying(true);
@@ -24,11 +36,14 @@ export function usePlayer(playlist: PlaylistManager) {
   }
 
   function stop() {
+    clearPendingPlay();
     playerRef.current.stop();
     setIsPlaying(false);
   }
 
   function togglePlayPause() {
+    clearPendingPlay();
+
     if (isPlaying) {
       stop();
     } else {
@@ -38,6 +53,7 @@ export function usePlayer(playlist: PlaylistManager) {
 
   function next() {
     const wasPlaying = isPlaying;
+    clearPendingPlay();
     stop();
 
     const track = playlist.nextTrack();
@@ -45,15 +61,19 @@ export function usePlayer(playlist: PlaylistManager) {
     updateIndex();
 
     if (track && wasPlaying) {
-      setTimeout(() => {
-        playerRef.current.play(track.path);
-        setIsPlaying(true);
+      playTimeoutRef.current = setTimeout(() => {
+        if (track === playlist.getCurrentTrack()) {
+          playerRef.current.play(track.path);
+          setIsPlaying(true);
+        }
+        playTimeoutRef.current = null;
       }, 100);
     }
   }
 
   function previous() {
     const wasPlaying = isPlaying;
+    clearPendingPlay();
     stop();
 
     const track = playlist.previousTrack();
@@ -61,21 +81,29 @@ export function usePlayer(playlist: PlaylistManager) {
     updateIndex();
 
     if (track && wasPlaying) {
-      setTimeout(() => {
-        playerRef.current.play(track.path);
-        setIsPlaying(true);
+      playTimeoutRef.current = setTimeout(() => {
+        if (track === playlist.getCurrentTrack()) {
+          playerRef.current.play(track.path);
+          setIsPlaying(true);
+        }
+        playTimeoutRef.current = null;
       }, 100);
     }
   }
 
   function restart() {
-    if (currentTrack) {
-      playerRef.current.stop();
-      setTimeout(() => {
+    if (!currentTrack) return;
+
+    clearPendingPlay();
+    playerRef.current.stop();
+
+    playTimeoutRef.current = setTimeout(() => {
+      if (currentTrack) {
         playerRef.current.play(currentTrack.path);
         setIsPlaying(true);
-      }, 50);
-    }
+      }
+      playTimeoutRef.current = null;
+    }, 50);
   }
 
   function increaseVolume() {
@@ -91,7 +119,6 @@ export function usePlayer(playlist: PlaylistManager) {
   }
 
   function updateIndex() {
-    // Get current index from playlist
     const idx = (playlist as any).currentTrackIndex || 0;
     setCurrentIndex(idx);
   }
@@ -102,6 +129,7 @@ export function usePlayer(playlist: PlaylistManager) {
 
   useEffect(() => {
     return () => {
+      clearPendingPlay();
       playerRef.current.stop();
     };
   }, []);
