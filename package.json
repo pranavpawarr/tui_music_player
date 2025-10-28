@@ -18,6 +18,9 @@
   "license": "ISC",
   "dependencies": {
     "ink": "^6.4.0",
+    "ink-big-text": "^2.0.0",
+    "ink-gradient": "^3.0.0",
+    "ink-spinner": "^5.0.0",
     "music-metadata": "^7.14.0",
     "node-id3": "^0.2.9",
     "play-sound": "^1.1.6",
