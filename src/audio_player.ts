@@ -32,7 +32,7 @@ export class AudioPlayer {
   public stop(): void {
     if (this.currentAudio) {
       try {
-        this.currentAudio.kill(); // Kill the process
+        this.currentAudio.kill();
       } catch (err) {
         // Ignore errors if already killed
       }
