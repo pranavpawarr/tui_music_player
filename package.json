@@ -16,11 +16,13 @@
   "dependencies": {
     "music-metadata": "^7.14.0",
     "node-id3": "^0.2.9",
+    "play-sound": "^1.1.6",
     "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
     "@types/node": "^24.9.1",
+    "@types/play-sound": "^1.1.2",
     "@types/uuid": "^10.0.0",
     "jest": "^30.2.0",
     "ts-jest": "^29.4.5",
